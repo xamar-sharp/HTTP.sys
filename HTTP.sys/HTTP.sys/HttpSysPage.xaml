@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Name="page" xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HTTP.sys.HttpSysPage" xmlns:local="clr-namespace:HTTP.sys.MarkupExtensions" BackgroundColor="Black">
+
+    <StackLayout>
+        <Label Text="{local:Localizer FillFormLabel}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+        <Entry x:Name="statusCode" Placeholder="{local:Localizer StatusCodePlaceholder}" Keyboard="Numeric" MaxLength="3" IsSpellCheckEnabled="False" IsReadOnly="False" IsPassword="False" ReturnCommand="{Binding SetStatusCode}" ReturnCommandParameter="{x:Reference statusCode}"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Entry x:Name="prefixEntry" Grid.Row="0" Grid.Column="0" Keyboard="Url" MaxLength="64" IsSpellCheckEnabled="False" IsPassword="False" IsReadOnly="False" ReturnCommand="{Binding SetPrefixes}" ReturnCommandParameter="{x:Reference prefixEntry}" Placeholder="{local:Localizer PrefixPlaceholder}"/>
+            <ListView ItemsSource="{Binding Prefixes}" Grid.Row="1" Grid.Column="0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell x:Name="textCell" Text="{Binding .}" TextColor="OrangeRed">
+                            <TextCell.ContextActions>
+                                <MenuItem x:Name="menuItem" IsDestructive="True" Text="{local:Localizer DeleteRow}" BindingContext="{x:Reference page}" Command="{Binding ViewModel.SetPrefixes}" CommandParameter="{x:Reference textCell}"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Entry x:Name="headerEntry" Keyboard="Default" Grid.Row="0" Grid.Column="1" MaxLength="128" IsSpellCheckEnabled="False" IsPassword="False" IsReadOnly="False" ReturnCommand="{Binding AddHeader}" ReturnCommandParameter="{x:Reference headerEntry}" Placeholder="{local:Localizer HeaderPlaceholder}"/>
+            <ListView ItemsSource="{Binding Headers}" Grid.Row="1" Grid.Column="1">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell x:Name="textCell" Text="{Binding .}" TextColor="YellowGreen">
+                            <TextCell.ContextActions>
+                                <MenuItem x:Name="menuItem" IsDestructive="True" Text="{local:Localizer DeleteRow}" BindingContext="{x:Reference page}" Command="{Binding ViewModel.AddHeader}" CommandParameter="{x:Reference textCell}"/>
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        <Button Text="{local:Localizer SelectFile}" Command="{Binding SelectFile}" CommandParameter="{x:Reference label}"/>
+        <Label x:Name="label" Text="{Binding SelectedFile.FileName,Mode=OneWay}" HorizontalTextAlignment="Center"/>
+        <Button Text="{local:Localizer StartListener}" Command="{Binding StartListener}" CommandParameter="{x:Reference act}"/>
+        <ActivityIndicator x:Name="act"/>
+        <Button Text="{local:Localizer StopListener}" Command="{Binding StopListener}" CommandParameter="{x:Reference act}"/>
+        <Button Text="{local:Localizer Exit}" Clicked="Button_Clicked"/>
+    </StackLayout>
+
+</ContentPage>
