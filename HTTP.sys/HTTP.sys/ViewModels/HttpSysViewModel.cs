@@ -128,7 +128,7 @@ namespace HTTP.sys.ViewModels
                 //        _listener.Prefixes.Add(prefix);
                 //    }
                 //}
-                _listener.Prefixes.Add(GetLocalIP());
+                _listener.Prefixes.Add("http://"+GetLocalIP()+":5000/");
                 _listener.Start();
                 ChangeCanExecute();
                 (obj as ActivityIndicator).IsVisible = true;
@@ -152,6 +152,7 @@ namespace HTTP.sys.ViewModels
             }, (obj) => SelectedFile.Data != null);
             StopListener = new Command((obj) =>
             {
+                App.DisposeManager.Unregister(this);
                 _listener.Stop();
                 (obj as ActivityIndicator).IsVisible = false;
                 (obj as ActivityIndicator).IsRunning = false;
