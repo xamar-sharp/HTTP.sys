@@ -8,6 +8,7 @@ using System.Net;
 using System.Windows.Input;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Net.Sockets;
 using Xamarin.Forms;
 using System.Collections.ObjectModel;
 namespace HTTP.sys.ViewModels
@@ -58,6 +59,14 @@ namespace HTTP.sys.ViewModels
                 await stream.ReadAsync(buffer, 0, buffer.Length);
             }
             return new FileViewModel(result.FileName, buffer);
+        }
+        public string GetLocalIP()
+        {
+            TcpListener listener = new TcpListener(IPAddress.Loopback, 0);
+            listener.Start();
+            var str = (listener.LocalEndpoint as IPEndPoint).Address.ToString();
+            listener.Stop();
+            return str;
         }
         public void Dispose()
         {
@@ -112,13 +121,14 @@ namespace HTTP.sys.ViewModels
             });
             StartListener = new Command(async (obj) =>
             {
-                if (_listener.Prefixes.Count == 0)
-                {
-                    foreach (var prefix in Prefixes)
-                    {
-                        _listener.Prefixes.Add(prefix);
-                    }
-                }
+                //if (_listener.Prefixes.Count == 0)
+                //{
+                //    foreach (var prefix in Prefixes)
+                //    {
+                //        _listener.Prefixes.Add(prefix);
+                //    }
+                //}
+                _listener.Prefixes.Add(GetLocalIP());
                 _listener.Start();
                 ChangeCanExecute();
                 (obj as ActivityIndicator).IsVisible = true;
