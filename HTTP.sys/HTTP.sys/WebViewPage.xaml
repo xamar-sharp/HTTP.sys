@@ -4,7 +4,7 @@
              x:Class="HTTP.sys.WebViewPage" xmlns:local="clr-namespace:HTTP.sys.MarkupExtensions" BackgroundColor="Black">
     <ContentPage.Content>
         <StackLayout>
-            <Entry Placeholder="{local:Localizer RawPlaceholder}" Text="{Binding Raw,Mode=OneWayToSource}"  ReturnCommand="{Binding SendRequest}" ReturnCommandParameter="{x:Reference webView}"/>
+            <Editor Placeholder="{local:Localizer RawPlaceholder}" TextColor="White" Text="{Binding Raw,Mode=OneWayToSource}" AutoSize="TextChanges" Keyboard="Chat" Completed="Editor_Completed"/>
             <StackLayout Orientation="Horizontal">
                 <CheckBox IsChecked="{Binding IsHtml,Mode=OneWayToSource}"/>
                 <Label Text="{local:Localizer IsHtmlLabel}"/>

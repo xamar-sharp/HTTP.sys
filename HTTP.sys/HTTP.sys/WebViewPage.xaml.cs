@@ -20,5 +20,10 @@ namespace HTTP.sys
             ViewModel = new WebViewModel();
             this.BindingContext = ViewModel;
         }
+
+        private void Editor_Completed(object sender, EventArgs e)
+        {
+            ViewModel.SendRequest.Execute(webView);
+        }
     }
 }
